@@ -58,6 +58,7 @@
             // 
             // lblAppName
             // 
+            lblAppName.Anchor = AnchorStyles.Left;
             lblAppName.AutoSize = true;
             lblAppName.Font = new Font("맑은 고딕", 25.2F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lblAppName.ForeColor = Color.DodgerBlue;
@@ -69,20 +70,23 @@
             // 
             // txtRightDir
             // 
-            txtRightDir.Location = new Point(3, 23);
+            txtRightDir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtRightDir.Location = new Point(3, 46);
             txtRightDir.Name = "txtRightDir";
-            txtRightDir.Size = new Size(346, 27);
+            txtRightDir.Size = new Size(445, 27);
             txtRightDir.TabIndex = 1;
             // 
             // txtLeftDir
             // 
-            txtLeftDir.Location = new Point(5, 26);
+            txtLeftDir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtLeftDir.Location = new Point(3, 46);
             txtLeftDir.Name = "txtLeftDir";
-            txtLeftDir.Size = new Size(376, 27);
+            txtLeftDir.Size = new Size(481, 27);
             txtLeftDir.TabIndex = 2;
             // 
             // btnRightDir
             // 
+            btnRightDir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnRightDir.Location = new Point(35, 25);
             btnRightDir.Name = "btnRightDir";
             btnRightDir.Size = new Size(94, 29);
@@ -93,6 +97,7 @@
             // 
             // btnLeftDir
             // 
+            btnLeftDir.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnLeftDir.Location = new Point(390, 23);
             btnLeftDir.Name = "btnLeftDir";
             btnLeftDir.Size = new Size(94, 29);
@@ -103,7 +108,8 @@
             // 
             // btnCopyFromLeft
             // 
-            btnCopyFromLeft.Location = new Point(390, 23);
+            btnCopyFromLeft.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyFromLeft.Location = new Point(400, 6);
             btnCopyFromLeft.Name = "btnCopyFromLeft";
             btnCopyFromLeft.Size = new Size(94, 29);
             btnCopyFromLeft.TabIndex = 5;
@@ -113,7 +119,8 @@
             // 
             // btnCopyFromRight
             // 
-            btnCopyFromRight.Location = new Point(360, 22);
+            btnCopyFromRight.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyFromRight.Location = new Point(363, 6);
             btnCopyFromRight.Name = "btnCopyFromRight";
             btnCopyFromRight.Size = new Size(94, 29);
             btnCopyFromRight.TabIndex = 6;
