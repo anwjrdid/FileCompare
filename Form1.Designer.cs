@@ -217,6 +217,7 @@
             Controls.Add(SplitContainer);
             Name = "Form1";
             Text = "File Contaioner v1.0";
+            Load += Form1_Load;
             SplitContainer.Panel1.ResumeLayout(false);
             SplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)SplitContainer).EndInit();
