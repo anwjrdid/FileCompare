@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace FileCompare
 {
@@ -12,9 +14,6 @@ namespace FileCompare
             InitializeComponent();
         }
 
-        // =========================
-        // 폼 시작
-        // =========================
         private void Form1_Load(object sender, EventArgs e)
         {
             InitListView();
@@ -26,7 +25,6 @@ namespace FileCompare
         // =========================
         private void InitListView()
         {
-            // 왼쪽
             lvwLeftDir.View = View.Details;
             lvwLeftDir.FullRowSelect = true;
             lvwLeftDir.GridLines = true;
@@ -35,7 +33,6 @@ namespace FileCompare
             lvwLeftDir.Columns.Add("크기", 100);
             lvwLeftDir.Columns.Add("수정일", 150);
 
-            // 오른쪽 (이름 주의: lvwrightDir)
             lvwrightDir.View = View.Details;
             lvwrightDir.FullRowSelect = true;
             lvwrightDir.GridLines = true;
@@ -52,118 +49,148 @@ namespace FileCompare
         {
             txtLeftDir.Text = "";
             txtRightDir.Text = "";
-
             lvwLeftDir.Items.Clear();
             lvwrightDir.Items.Clear();
         }
 
         // =========================
-        // 폴더 선택 (왼쪽)
+        // 왼쪽 폴더 선택
         // =========================
         private void btnLeftDir_Click(object sender, EventArgs e)
         {
             using (var dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "왼쪽 폴더 선택";
-
-                if (!string.IsNullOrWhiteSpace(txtLeftDir.Text) && Directory.Exists(txtLeftDir.Text))
-                {
-                    dlg.SelectedPath = txtLeftDir.Text;
-                }
-
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     txtLeftDir.Text = dlg.SelectedPath;
-                    PopulateListView(lvwLeftDir, dlg.SelectedPath);
+
+                    if (Directory.Exists(txtRightDir.Text))
+                        CompareAndDisplay();
+                    else
+                        PopulateSingle(lvwLeftDir, txtLeftDir.Text);
                 }
             }
         }
 
         // =========================
-        // 폴더 선택 (오른쪽)
+        // 오른쪽 폴더 선택
         // =========================
         private void btnRightDir_Click(object sender, EventArgs e)
         {
             using (var dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "오른쪽 폴더 선택";
-
-                if (!string.IsNullOrWhiteSpace(txtRightDir.Text) && Directory.Exists(txtRightDir.Text))
-                {
-                    dlg.SelectedPath = txtRightDir.Text;
-                }
-
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     txtRightDir.Text = dlg.SelectedPath;
-                    PopulateListView(lvwrightDir, dlg.SelectedPath);
+
+                    if (Directory.Exists(txtLeftDir.Text))
+                        CompareAndDisplay();
+                    else
+                        PopulateSingle(lvwrightDir, txtRightDir.Text);
                 }
             }
         }
 
         // =========================
-        // 파일 목록 출력 핵심 함수
+        // 단일 폴더 표시
         // =========================
-        private void PopulateListView(ListView lv, string folderPath)
+        private void PopulateSingle(ListView lv, string folderPath)
         {
-            lv.BeginUpdate();
             lv.Items.Clear();
 
             try
             {
-                // 📁 폴더 먼저 표시
-                var dirs = Directory.EnumerateDirectories(folderPath)
-                                    .Select(p => new DirectoryInfo(p))
-                                    .OrderBy(d => d.Name);
-
-                foreach (var d in dirs)
-                {
-                    var item = new ListViewItem(d.Name);
-                    item.SubItems.Add("<DIR>");
-                    item.SubItems.Add(d.LastWriteTime.ToString("g"));
-                    lv.Items.Add(item);
-                }
-
-                // 📄 파일 표시
                 var files = Directory.EnumerateFiles(folderPath)
-                                     .Select(p => new FileInfo(p))
+                                     .Select(f => new FileInfo(f))
                                      .OrderBy(f => f.Name);
 
                 foreach (var f in files)
                 {
                     var item = new ListViewItem(f.Name);
-                    item.SubItems.Add(f.Length.ToString("N0") + " 바이트");
+                    item.SubItems.Add(f.Length.ToString("N0"));
                     item.SubItems.Add(f.LastWriteTime.ToString("g"));
                     lv.Items.Add(item);
-                }
-
-                // 컬럼 자동 크기 조절
-                for (int i = 0; i < lv.Columns.Count; i++)
-                {
-                    lv.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("오류 발생: " + ex.Message);
-            }
-            finally
-            {
-                lv.EndUpdate();
+                MessageBox.Show("오류: " + ex.Message);
             }
         }
 
         // =========================
-        // 복사 버튼 (아직 과제3)
+        // 🔥 비교 + 색상 표시
+        // =========================
+        private void CompareAndDisplay()
+        {
+            lvwLeftDir.Items.Clear();
+            lvwrightDir.Items.Clear();
+
+            if (!Directory.Exists(txtLeftDir.Text) || !Directory.Exists(txtRightDir.Text))
+                return;
+
+            var leftFiles = Directory.EnumerateFiles(txtLeftDir.Text)
+                .Select(f => new FileInfo(f))
+                .ToDictionary(f => f.Name);
+
+            var rightFiles = Directory.EnumerateFiles(txtRightDir.Text)
+                .Select(f => new FileInfo(f))
+                .ToDictionary(f => f.Name);
+
+            var allNames = leftFiles.Keys.Union(rightFiles.Keys).OrderBy(n => n);
+
+            foreach (var name in allNames)
+            {
+                leftFiles.TryGetValue(name, out var lf);
+                rightFiles.TryGetValue(name, out var rf);
+
+                var leftItem = new ListViewItem(name);
+                leftItem.SubItems.Add(lf != null ? lf.Length.ToString("N0") : "");
+                leftItem.SubItems.Add(lf != null ? lf.LastWriteTime.ToString("g") : "");
+
+                var rightItem = new ListViewItem(name);
+                rightItem.SubItems.Add(rf != null ? rf.Length.ToString("N0") : "");
+                rightItem.SubItems.Add(rf != null ? rf.LastWriteTime.ToString("g") : "");
+
+                // 색상 처리
+                if (lf != null && rf != null)
+                {
+                    if (lf.LastWriteTime > rf.LastWriteTime)
+                    {
+                        leftItem.ForeColor = Color.Red;
+                        rightItem.ForeColor = Color.Gray;
+                    }
+                    else if (lf.LastWriteTime < rf.LastWriteTime)
+                    {
+                        leftItem.ForeColor = Color.Gray;
+                        rightItem.ForeColor = Color.Red;
+                    }
+                }
+                else if (lf != null)
+                {
+                    leftItem.ForeColor = Color.Purple;
+                }
+                else if (rf != null)
+                {
+                    rightItem.ForeColor = Color.Purple;
+                }
+
+                lvwLeftDir.Items.Add(leftItem);
+                lvwrightDir.Items.Add(rightItem);
+            }
+        }
+
+        // =========================
+        // 과제3 (아직)
         // =========================
         private void btnCopyFromLeft_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("왼쪽 → 오른쪽 복사 (과제3)");
+            MessageBox.Show("과제3에서 구현");
         }
 
         private void btnCopyFromRight_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("오른쪽 → 왼쪽 복사 (과제3)");
+            MessageBox.Show("과제3에서 구현");
         }
     }
 }
