@@ -45,6 +45,40 @@ namespace FileCompare
         }
 
         // =========================
+        // 공통 함수 (추가된 부분)
+        // =========================
+        private void PopulateListView(ListView lv, string path, Dictionary<string, FileSystemInfo> dict)
+        {
+            lv.Items.Clear();
+            dict.Clear();
+
+            if (!Directory.Exists(path)) return;
+
+            foreach (var d in Directory.GetDirectories(path))
+            {
+                var info = new DirectoryInfo(d);
+                dict[info.Name] = info;
+
+                var item = new ListViewItem(info.Name);
+                item.SubItems.Add("<DIR>");
+                item.SubItems.Add(info.LastWriteTime.ToString("g"));
+                lv.Items.Add(item);
+            }
+
+            foreach (var f in Directory.GetFiles(path))
+            {
+                var info = new FileInfo(f);
+                dict[info.Name] = info;
+
+                double sizeKB = info.Length / 1024.0;
+                var item = new ListViewItem(info.Name);
+                item.SubItems.Add($"{sizeKB:N1} KB");
+                item.SubItems.Add(info.LastWriteTime.ToString("g"));
+                lv.Items.Add(item);
+            }
+        }
+
+        // =========================
         // 폴더 선택
         // =========================
         private void btnLeftDir_Click(object sender, EventArgs e)
@@ -74,7 +108,7 @@ namespace FileCompare
         }
 
         // =========================
-        // 데이터 로드
+        // 데이터 로드 (기존 유지 + KB 적용)
         // =========================
         private void LoadLeft()
         {
@@ -99,8 +133,9 @@ namespace FileCompare
                 var info = new FileInfo(f);
                 leftItems[info.Name] = info;
 
+                double sizeKB = info.Length / 1024.0;
                 var item = new ListViewItem(info.Name);
-                item.SubItems.Add(info.Length.ToString("N0"));
+                item.SubItems.Add($"{sizeKB:N1} KB");
                 item.SubItems.Add(info.LastWriteTime.ToString("g"));
                 lvwLeftDir.Items.Add(item);
             }
@@ -129,8 +164,9 @@ namespace FileCompare
                 var info = new FileInfo(f);
                 rightItems[info.Name] = info;
 
+                double sizeKB = info.Length / 1024.0;
                 var item = new ListViewItem(info.Name);
-                item.SubItems.Add(info.Length.ToString("N0"));
+                item.SubItems.Add($"{sizeKB:N1} KB");
                 item.SubItems.Add(info.LastWriteTime.ToString("g"));
                 lvwrightDir.Items.Add(item);
             }
@@ -240,7 +276,7 @@ namespace FileCompare
         }
 
         // =========================
-        // 🔥 재귀 복사 (중복 질문 방지)
+        // 재귀 복사
         // =========================
         private void CopyRecursive(string src, string dest, bool overwriteAll = false)
         {
@@ -286,9 +322,6 @@ namespace FileCompare
             }
         }
 
-        // =========================
-        // 파일 복사
-        // =========================
         private void CopyFileWithConfirm(string src, string dest, bool overwriteAll = false)
         {
             try

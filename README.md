@@ -1,5 +1,3 @@
-# FileCompare
-
 # (C# 코딩) FileCompare
 
 ## 개요
