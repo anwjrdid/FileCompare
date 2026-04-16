@@ -45,7 +45,7 @@ namespace FileCompare
         }
 
         // =========================
-        // 공통 함수 (추가된 부분)
+        // 공통 함수
         // =========================
         private void PopulateListView(ListView lv, string path, Dictionary<string, FileSystemInfo> dict)
         {
@@ -108,7 +108,7 @@ namespace FileCompare
         }
 
         // =========================
-        // 데이터 로드 (기존 유지 + KB 적용)
+        // 데이터 로드
         // =========================
         private void LoadLeft()
         {
@@ -173,7 +173,7 @@ namespace FileCompare
         }
 
         // =========================
-        // 색상 비교
+        // 색상 비교 (🔥 수정 완료)
         // =========================
         private void ApplyColor()
         {
@@ -186,12 +186,12 @@ namespace FileCompare
                     var l = leftItems[name];
                     var r = rightItems[name];
 
-                    if (l.LastWriteTime > r.LastWriteTime)
-                        item.ForeColor = Color.Red;
-                    else if (l.LastWriteTime < r.LastWriteTime)
-                        item.ForeColor = Color.Gray;
-                    else
+                    if (l.LastWriteTime == r.LastWriteTime)
                         item.ForeColor = Color.Black;
+                    else if (l.LastWriteTime > r.LastWriteTime)
+                        item.ForeColor = Color.Red;
+                    else
+                        item.ForeColor = Color.Gray;
                 }
                 else
                 {
@@ -208,12 +208,12 @@ namespace FileCompare
                     var l = leftItems[name];
                     var r = rightItems[name];
 
-                    if (r.LastWriteTime > l.LastWriteTime)
-                        item.ForeColor = Color.Red;
-                    else if (r.LastWriteTime < l.LastWriteTime)
-                        item.ForeColor = Color.Gray;
-                    else
+                    if (l.LastWriteTime == r.LastWriteTime)
                         item.ForeColor = Color.Black;
+                    else if (r.LastWriteTime > l.LastWriteTime)
+                        item.ForeColor = Color.Red;
+                    else
+                        item.ForeColor = Color.Gray;
                 }
                 else
                 {
