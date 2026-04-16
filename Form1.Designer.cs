@@ -69,14 +69,14 @@
             // 
             // txtRightDir
             // 
-            txtRightDir.Location = new Point(3, 21);
+            txtRightDir.Location = new Point(3, 23);
             txtRightDir.Name = "txtRightDir";
             txtRightDir.Size = new Size(346, 27);
             txtRightDir.TabIndex = 1;
             // 
             // txtLeftDir
             // 
-            txtLeftDir.Location = new Point(5, 15);
+            txtLeftDir.Location = new Point(5, 26);
             txtLeftDir.Name = "txtLeftDir";
             txtLeftDir.Size = new Size(376, 27);
             txtLeftDir.TabIndex = 2;
@@ -93,7 +93,7 @@
             // 
             // btnLeftDir
             // 
-            btnLeftDir.Location = new Point(368, 23);
+            btnLeftDir.Location = new Point(390, 23);
             btnLeftDir.Name = "btnLeftDir";
             btnLeftDir.Size = new Size(94, 29);
             btnLeftDir.TabIndex = 4;
@@ -103,7 +103,7 @@
             // 
             // btnCopyFromLeft
             // 
-            btnCopyFromLeft.Location = new Point(387, 13);
+            btnCopyFromLeft.Location = new Point(390, 23);
             btnCopyFromLeft.Name = "btnCopyFromLeft";
             btnCopyFromLeft.Size = new Size(94, 29);
             btnCopyFromLeft.TabIndex = 5;
@@ -113,7 +113,7 @@
             // 
             // btnCopyFromRight
             // 
-            btnCopyFromRight.Location = new Point(355, 21);
+            btnCopyFromRight.Location = new Point(360, 22);
             btnCopyFromRight.Name = "btnCopyFromRight";
             btnCopyFromRight.Size = new Size(94, 29);
             btnCopyFromRight.TabIndex = 6;
@@ -126,7 +126,7 @@
             lvwLeftDir.Dock = DockStyle.Fill;
             lvwLeftDir.Location = new Point(0, 0);
             lvwLeftDir.Name = "lvwLeftDir";
-            lvwLeftDir.Size = new Size(486, 356);
+            lvwLeftDir.Size = new Size(497, 356);
             lvwLeftDir.TabIndex = 7;
             lvwLeftDir.UseCompatibleStateImageBehavior = false;
             // 
@@ -135,7 +135,7 @@
             lvwrightDir.Dock = DockStyle.Fill;
             lvwrightDir.Location = new Point(0, 0);
             lvwrightDir.Name = "lvwrightDir";
-            lvwrightDir.Size = new Size(452, 353);
+            lvwrightDir.Size = new Size(460, 353);
             lvwrightDir.TabIndex = 8;
             lvwrightDir.UseCompatibleStateImageBehavior = false;
             // 
@@ -162,53 +162,59 @@
             // 
             // panel3
             // 
+            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel3.Controls.Add(lvwLeftDir);
-            panel3.Location = new Point(8, 157);
+            panel3.Location = new Point(0, 157);
             panel3.Name = "panel3";
-            panel3.Size = new Size(486, 356);
+            panel3.Size = new Size(497, 356);
             panel3.TabIndex = 6;
             // 
             // panel2
             // 
             panel2.Controls.Add(txtLeftDir);
             panel2.Controls.Add(btnCopyFromLeft);
-            panel2.Location = new Point(3, 86);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 68);
             panel2.Name = "panel2";
-            panel2.Size = new Size(495, 65);
+            panel2.Size = new Size(497, 86);
             panel2.TabIndex = 5;
             // 
             // panel1
             // 
             panel1.Controls.Add(lblAppName);
             panel1.Controls.Add(btnLeftDir);
-            panel1.Location = new Point(0, 5);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(498, 75);
+            panel1.Size = new Size(497, 68);
             panel1.TabIndex = 9;
             // 
             // panel6
             // 
+            panel6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel6.Controls.Add(lvwrightDir);
-            panel6.Location = new Point(3, 157);
+            panel6.Location = new Point(0, 160);
             panel6.Name = "panel6";
-            panel6.Size = new Size(452, 353);
+            panel6.Size = new Size(460, 353);
             panel6.TabIndex = 7;
             // 
             // panel5
             // 
             panel5.Controls.Add(txtRightDir);
             panel5.Controls.Add(btnCopyFromRight);
-            panel5.Location = new Point(3, 80);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 68);
             panel5.Name = "panel5";
-            panel5.Size = new Size(452, 71);
+            panel5.Size = new Size(460, 86);
             panel5.TabIndex = 4;
             // 
             // panel4
             // 
             panel4.Controls.Add(btnRightDir);
-            panel4.Location = new Point(3, 3);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(0, 0);
             panel4.Name = "panel4";
-            panel4.Size = new Size(464, 71);
+            panel4.Size = new Size(460, 68);
             panel4.TabIndex = 8;
             // 
             // Form1
